@@ -8,6 +8,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #080b0f; }
+::-webkit-scrollbar-thumb { 
+  background: #d4a84b; 
+  border-radius: 10px; 
+  border: 2px solid #080b0f; 
+}
+
+  
 :root {
   --bg:          #080b0f;
   --glass:       rgba(255,255,255,0.055);
@@ -38,29 +48,26 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'Outfit', system-ui, sans-serif;
   color: var(--text);
-  background: var(--bg-dark);
+  background: var(--bg);
   min-height: 100vh;
   margin: 0;
-  display: flex;
-  flex-direction: column; /* Základ pro fix footeru */
+  display: flex; /* Důležité pro footer */
+  flex-direction: column; /* Důležité pro footer */
   overflow-x: hidden;
 }
 
-/* Fixní pozadí s vaší fotografií a overlayem */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
   background: 
-    /* Gradient, který zajistí, že text bude čitelný i přes světlé části fotky */
-    linear-gradient(160deg, rgba(8,11,15,0.92) 0%, rgba(8,11,15,0.85) 50%, rgba(8,11,15,0.95) 100%),
-    /* Odkaz na váš soubor */
+    linear-gradient(160deg, rgba(8,11,15,0.94) 0%, rgba(8,11,15,0.82) 50%, rgba(8,11,15,0.96) 100%),
     url('cooking-background 3.jpg'); 
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
-  background-repeat: no-repeat;
+  filter: brightness(0.85) contrast(1.05);
 }
 
 /* Zajištění, že main zabere veškerý volný prostor a odtlačí footer */
@@ -434,18 +441,15 @@ header {
 
 /* ── FOOTER ── */
 footer {
-  flex-shrink: 0; /* Zabrání smrštění footeru */
+  flex-shrink: 0;
   position: relative;
   z-index: 1;
   border-top: 1px solid var(--border);
-  padding: 32px 28px; /* Více místa pro lepší vzhled */
+  padding: 48px 28px;
   text-align: center;
-  color: var(--subtle);
-  font-size: .8rem;
-  backdrop-filter: blur(var(--blur-md));
-  -webkit-backdrop-filter: blur(var(--blur-md));
-  background: rgba(6, 8, 14, 0.8);
-  margin-top: 40px;
+  background: rgba(8, 11, 15, 0.85);
+  backdrop-filter: blur(20px);
+  margin-top: auto; /* Toto ho dotlačí dospodu */
 }
 
 /* ── ANIMATIONS ── */
