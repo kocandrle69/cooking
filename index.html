@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌿 Vegetariánské recepty</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-bg-md: rgba(255,255,255,0.09);
+      --glass-bg-lg: rgba(255,255,255,0.13);
+      --glass-border: rgba(255,255,255,0.11);
+      --glass-border-lg: rgba(255,255,255,0.18);
+      --glass-shine: rgba(255,255,255,0.22);
+      --blur-sm: 16px;
+      --blur-md: 28px;
+      --blur-lg: 48px;
+      --radius: 26px;
+      --radius-sm: 16px;
+      --radius-full: 100px;
+      --accent: #f4a261;
+      --accent-dim: rgba(244,162,97,0.28);
+      --accent-glow: rgba(244,162,97,0.18);
+      --text: #f2ede7;
+      --text-muted: rgba(242,237,231,0.52);
+      --text-subtle: rgba(242,237,231,0.32);
+      --bg: #060410;
+      --header-bg: rgba(6,4,16,0.72);
+      --modal-bg: rgba(10,7,22,0.94);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── BACKGROUND ORBS ────────────────────────────────── */
+
+    .bg-stage {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      will-change: transform;
+    }
+
+    .orb-1 {
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, #7c3aed 0%, #4c1d95 60%, transparent 100%);
+      top: -250px; left: -180px;
+      opacity: 0.4;
+      animation: drift1 28s ease-in-out infinite alternate;
+    }
+    .orb-2 {
+      width: 550px; height: 550px;
+      background: radial-gradient(circle, #ea580c 0%, #9a3412 60%, transparent 100%);
+      top: 10%; right: -150px;
+      opacity: 0.35;
+      animation: drift2 22s ease-in-out infinite alternate;
+    }
+    .orb-3 {
+      width: 480px; height: 480px;
+      background: radial-gradient(circle, #0284c7 0%, #075985 60%, transparent 100%);
+      bottom: 5%; left: 15%;
+      opacity: 0.3;
+      animation: drift3 32s ease-in-out infinite alternate;
+    }
+    .orb-4 {
+      width: 380px; height: 380px;
+      background: radial-gradient(circle, #059669 0%, #064e3b 60%, transparent 100%);
+      bottom: 0; right: 10%;
+      opacity: 0.3;
+      animation: drift1 18s ease-in-out infinite alternate;
+    }
+    .orb-5 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, #db2777 0%, transparent 100%);
+      top: 45%; left: 45%;
+      opacity: 0.18;
+      animation: drift2 24s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(70px, 50px) scale(1.12); }
+    }
+    @keyframes drift2 {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(-60px, 70px) scale(0.92); }
+    }
+    @keyframes drift3 {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(50px, -60px) scale(1.08); }
+    }
+
+    /* Noise grain overlay */
+    .bg-stage::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.028;
+    }
+
+    /* ── LAYOUT ─────────────────────────────────────────── */
+
+    .z1 { position: relative; z-index: 1; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────── */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(var(--blur-md)) saturate(160%);
+      -webkit-backdrop-filter: blur(var(--blur-md)) saturate(160%);
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 28px;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 16px;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .logo .accent { color: var(--accent); }
+
+    /* ── LANG TOGGLE ────────────────────────────────────── */
+
+    .lang-toggle {
+      display: flex;
+      gap: 3px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-full);
+      padding: 4px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .lang-toggle button {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 6px 15px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .lang-toggle button.active {
+      background: var(--glass-shine);
+      color: var(--text);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.25);
+    }
+
+    /* ── HERO ───────────────────────────────────────────── */
+
+    .hero {
+      padding: 90px 0 52px;
+      text-align: center;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-glow);
+      border: 1px solid var(--accent-dim);
+      border-radius: var(--radius-full);
+      padding: 5px 16px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      font-weight: 300;
+      margin-bottom: 44px;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── SEARCH ─────────────────────────────────────────── */
+
+    .search-wrap {
+      max-width: 580px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      background: var(--glass-bg-md);
+      backdrop-filter: blur(var(--blur-md));
+      -webkit-backdrop-filter: blur(var(--blur-md));
+      border: 1px solid var(--glass-border-lg);
+      border-radius: var(--radius-full);
+      padding: 17px 56px 17px 26px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+    }
+
+    .search-wrap input::placeholder { color: var(--text-subtle); }
+
+    .search-wrap input:focus {
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.11);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-subtle);
+      font-size: 1.25rem;
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+
+    .search-wrap input:focus + .search-icon { color: var(--accent); }
+
+    /* ── FILTERS ────────────────────────────────────────── */
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 32px 0 44px;
+    }
+
+    .filter-btn {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-full);
+      padding: 9px 22px;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.22s;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .filter-btn:hover {
+      background: var(--glass-bg-md);
+      border-color: var(--glass-border-lg);
+      color: var(--text);
+    }
+
+    .filter-btn.active {
+      background: var(--accent-dim);
+      border-color: rgba(244,162,97,0.45);
+      color: var(--accent);
+    }
+
+    /* ── RECIPE GRID ────────────────────────────────────── */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 18px;
+      padding-bottom: 100px;
+    }
+
+    /* ── RECIPE CARD ────────────────────────────────────── */
+
+    .recipe-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur-md));
+      -webkit-backdrop-filter: blur(var(--blur-md));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 30px;
+      cursor: pointer;
+      transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1), background 0.22s, border-color 0.22s, box-shadow 0.32s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Top gloss line */
+    .recipe-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--glass-shine) 40%, var(--glass-shine) 60%, transparent);
+      border-radius: 1px;
+    }
+
+    /* Inner subtle glow on hover */
+    .recipe-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      opacity: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(244,162,97,0.08) 0%, transparent 70%);
+      transition: opacity 0.3s;
+    }
+
+    .recipe-card:hover {
+      transform: translateY(-5px) scale(1.008);
+      background: var(--glass-bg-md);
+      border-color: rgba(255,255,255,0.17);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.45), 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 var(--glass-shine);
+    }
+
+    .recipe-card:hover::after { opacity: 1; }
+
+    .card-emoji {
+      font-size: 2.6rem;
+      display: block;
+      margin-bottom: 18px;
+      line-height: 1;
+    }
+
+    .card-cat {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 500;
+      line-height: 1.22;
+      margin-bottom: 12px;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 18px;
+      font-size: 0.78rem;
+      color: var(--text-subtle);
+      letter-spacing: 0.02em;
+    }
+
+    .card-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── MODAL ──────────────────────────────────────────── */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--modal-bg);
+      backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+      -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+      border: 1px solid var(--glass-border-lg);
+      border-radius: 32px;
+      max-width: 740px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      position: relative;
+      transform: scale(0.94) translateY(24px);
+      transition: transform 0.35s cubic-bezier(0.34,1.3,0.64,1);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.14);
+    }
+
+    .modal-overlay.open .modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-header {
+      padding: 34px 34px 26px;
+      border-bottom: 1px solid var(--glass-border);
+      position: sticky;
+      top: 0;
+      background: rgba(10,7,22,0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 32px 32px 0 0;
+      z-index: 1;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 22px; right: 22px;
+      background: var(--glass-bg-md);
+      border: 1px solid var(--glass-border);
+      border-radius: 50%;
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 1rem;
+      transition: background 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .modal-close:hover { background: var(--glass-bg-lg); color: var(--text); }
+
+    .modal-emoji { font-size: 2rem; display: block; margin-bottom: 10px; line-height: 1; }
+
+    .modal-cat {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 7px;
+    }
+
+    .modal-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.18;
+      padding-right: 48px;
+    }
+
+    .modal-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 300;
+      margin-top: 9px;
+      line-height: 1.6;
+    }
+
+    .modal-meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: var(--text-subtle);
+    }
+
+    .modal-body { padding: 28px 34px 36px; }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin: 28px 0 14px;
+      padding-bottom: 9px;
+      border-bottom: 1px solid var(--glass-border);
+      letter-spacing: 0.01em;
+    }
+
+    .section-title:first-child { margin-top: 0; }
+
+    .sub-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-subtle);
+      margin: 16px 0 8px;
+    }
+
+    .ing-list {
+      list-style: none;
+      display: grid;
+      gap: 6px;
+    }
+
+    .ing-list li {
+      padding: 9px 15px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 300;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.18s;
+    }
+
+    .ing-list li:hover { background: var(--glass-bg-md); }
+
+    .ing-dot {
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .steps-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .steps-list li {
+      padding: 16px 20px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.72;
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 14px;
+      align-items: start;
+      transition: background 0.18s;
+    }
+
+    .steps-list li:hover { background: var(--glass-bg-md); }
+
+    .step-num {
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-radius: 50%;
+      width: 28px; height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 500;
+      flex-shrink: 0;
+      margin-top: 1px;
+      border: 1px solid rgba(244,162,97,0.3);
+    }
+
+    .tip-box {
+      background: var(--glass-bg);
+      border: 1px solid rgba(244,162,97,0.22);
+      border-radius: 18px;
+      padding: 16px 20px;
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.72;
+      color: var(--text-muted);
+    }
+
+    /* Scrollbar */
+    .modal::-webkit-scrollbar { width: 4px; }
+    .modal::-webkit-scrollbar-track { background: transparent; }
+    .modal::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
+
+    /* ── EMPTY / NO RESULTS ─────────────────────────────── */
+
+    .no-results {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .no-results .nr-icon { font-size: 2.8rem; margin-bottom: 14px; }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--glass-border);
+      padding: 24px 28px;
+      text-align: center;
+      color: var(--text-subtle);
+      font-size: 0.82rem;
+      backdrop-filter: blur(var(--blur-sm));
+      -webkit-backdrop-filter: blur(var(--blur-sm));
+      background: rgba(6,4,16,0.5);
+    }
+
+    /* ── COUNT BADGE ────────────────────────────────────── */
+    .count-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--glass-bg-md);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-full);
+      padding: 4px 14px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────────── */
+
+    @media (max-width: 640px) {
+      .container { padding: 0 16px; }
+      .header-inner { padding: 14px 16px; }
+      .hero { padding: 60px 0 36px; }
+      .grid { grid-template-columns: 1fr; }
+      .modal { border-radius: 24px; max-height: 92vh; }
+      .modal-header { padding: 26px 22px 20px; border-radius: 24px 24px 0 0; }
+      .modal-name { font-size: 1.6rem; }
+      .modal-body { padding: 22px 22px 28px; }
+    }
+
+    /* ── FADE-IN ANIMATION ──────────────────────────────── */
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .recipe-card {
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .recipe-card:nth-child(1) { animation-delay: 0.04s; }
+    .recipe-card:nth-child(2) { animation-delay: 0.08s; }
+    .recipe-card:nth-child(3) { animation-delay: 0.12s; }
+    .recipe-card:nth-child(4) { animation-delay: 0.16s; }
+    .recipe-card:nth-child(5) { animation-delay: 0.20s; }
+    .recipe-card:nth-child(6) { animation-delay: 0.24s; }
+    .recipe-card:nth-child(n+7) { animation-delay: 0.28s; }
+  </style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-stage">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+  <div class="orb orb-5"></div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="header-inner">
+    <div class="logo" id="logo">🌿 <span class="accent">Naše</span> recepty</div>
+    <div class="lang-toggle">
+      <button id="btn-cs" class="active" onclick="setLang('cs')">CZ</button>
+      <button id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="container z1">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-label" id="hero-label">🥬 Ověřené recepty</div>
+    <h1 id="hero-title"><em>Vegetariánské</em> recepty</h1>
+    <p class="hero-sub" id="hero-sub">Naše oblíbená rodinná jídla z celého světa</p>
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Hledat recept…" oninput="renderGrid()" autocomplete="off">
+      <span class="search-icon">⌕</span>
+    </div>
+    <div class="count-badge" id="count-badge">
+      <span id="count-num"></span>
+      <span id="count-label">receptů</span>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <div class="filters" id="filters">
+    <button class="filter-btn active"
+      data-cs="Vše" data-en="All"
+      onclick="setFilter('all',this)">Vše</button>
+    <button class="filter-btn"
+      data-cs="🇮🇳 Indická" data-en="🇮🇳 Indian"
+      onclick="setFilter('indian',this)">🇮🇳 Indická</button>
+    <button class="filter-btn"
+      data-cs="🇪🇺 Evropská" data-en="🇪🇺 European"
+      onclick="setFilter('european',this)">🇪🇺 Evropská</button>
+    <button class="filter-btn"
+      data-cs="🍮 Dezerty" data-en="🍮 Desserts"
+      onclick="setFilter('dessert',this)">🍮 Dezerty</button>
+  </div>
+
+  <!-- Grid -->
+  <div class="grid" id="grid"></div>
+</main>
+
+<!-- Footer -->
+<footer>
+  <span id="footer-text">Naše oblíbené vegetariánské recepty · Vždy dostupné</span>
+</footer>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <span class="modal-emoji" id="m-emoji"></span>
+      <div class="modal-cat" id="m-cat"></div>
+      <div class="modal-name" id="m-name"></div>
+      <div class="modal-desc" id="m-desc"></div>
+      <div class="modal-meta" id="m-meta"></div>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+/* ── RECIPE DATA ─────────────────────────────────────────────────────────── */
+
+const recipes = [
+  {
+    id: 1, cat: 'indian', emoji: '🍛', time: '45 min',
+    diff: { cs: 'střední', en: 'medium' },
+    name: { cs: 'Krémová indická zeleninová korma', en: 'Creamy Indian Vegetable Korma' },
+    desc: { cs: 'Bohatá aromatická kari omáčka s kokosovým mlékem, jogurtem a kešu', en: 'Rich aromatic curry sauce with coconut milk, yogurt and cashews' },
+    catLabel: { cs: 'Indická kuchyně', en: 'Indian Cuisine' },
+    ing: {
+      cs: [
+        { sub: 'Pro sauce', items: ['3 stroužky česneku', '1 jalapeño pepř, osetý', '¼ šálku surových kešu', '1 kus zázvoru (2,5 cm), hrubě nasekaný', '1 střední žlutá cibule, rozpůlená'] },
+        { sub: 'Pro korma', items: ['2 malá rajčata, na kostičky', '1½ lžičky hnědého cukru', '1 lžíce rostlinného oleje', '1 střední voskový brambor, na kostičky', '1 šálek zelených fazolků', '1 šálek zmrazeného hrášku a mrkve', '¾ šálku jogurtu', '½ šálku plnotučného kokosového mléka', '½ lžičky mletého koriandru', '⅛ lžičky kardamomu', '½ lžičky černého pepře', '½ lžičky soli', '½ lžičky skořice', '1 lžička garam masala', '1 lžička kurkumy', '2 lžičky kari koření'] }
+      ],
+      en: [
+        { sub: 'For the sauce', items: ['3 garlic cloves', '1 jalapeño, seeded', '¼ cup raw cashews', '1 inch piece fresh ginger, roughly chopped', '1 medium yellow onion, halved'] },
+        { sub: 'For the korma', items: ['2 small tomatoes, diced', '1½ tsp brown sugar', '1 tbsp vegetable oil', '1 medium waxy potato, diced', '1 cup green beans, chopped', '1 cup frozen peas and carrots', '¾ cup plain yogurt', '½ cup canned full-fat coconut milk', '½ tsp coriander', '⅛ tsp cardamom', '½ tsp black pepper', '½ tsp kosher salt', '½ tsp cinnamon', '1 tsp garam masala', '1 tsp turmeric', '2 tsp curry powder'] }
+      ]
+    },
+    steps: {
+      cs: ['Cibuli, česnek, zázvor, jalapeño a kešu vložte do mixéru s ½ šálku vody. Mixujte do hladka.',
+           'V pánvi rozehřejte olej na středním plameni. Připravte všechno koření do malé misky.',
+           'Nalijte pyré do horké pánve (opatrně — stříká). Přidejte koření a vařte 2–3 minuty, dokud nebude vonět.',
+           'Přidejte rajčata, kokosové mléko, jogurt, cukr, brambory, hrášek s mrkví a fazolky. Promíchejte, přikryjte a duste 10 minut.',
+           'Odkryjte a vařte dalších 5–10 minut, dokud brambory nezměknou. Podávejte s basmati rýží a naanem.'],
+      en: ['Place onion, garlic, ginger, jalapeño and cashews in a blender with ½ cup water. Process until pureed.',
+           'Heat oil in a large sauté pan over medium heat. Measure out all spices into a small bowl.',
+           'Pour pureed sauce into the hot pan (caution — it splatters). Stir in spices and cook 2–3 minutes until fragrant.',
+           'Add tomatoes, coconut milk, yogurt, brown sugar, potato, peas-and-carrots, and green beans. Stir well, cover and simmer on medium heat for 10 minutes.',
+           'Uncover and cook another 5–10 minutes until potatoes are tender. Serve with cooked basmati rice and naan.']
+    }
+  },
+  {
+    id: 2, cat: 'indian', emoji: '🫘', time: '60 min',
+    diff: { cs: 'střední', en: 'medium' },
+    name: { cs: 'Tarka Dal', en: 'Tarka Dal' },
+    desc: { cs: 'Tradiční indická čočková polévka s aromatickým tarka přelitím a koriandrem', en: 'Traditional Indian lentil soup with aromatic tarka tempering and coriander' },
+    catLabel: { cs: 'Indická kuchyně', en: 'Indian Cuisine' },
+    ing: {
+      cs: [{ sub: '', items: ['250 g chana dal, propláchnutá', '3 lžíce rostlinného oleje', '1 lžíce semínek kmínu', '1 malá cibule, nakrájená', '3–4 zelené chilli papričky, napíchnuté nožem', '2 cm čerstvý zázvor, na tenké proužky', '3 stroužky česneku, vcelku', '3 rajčata', '¾ lžičky mleté kurkumy', '¾ lžičky garam masala', '1½ lžičky mletého koriandru', 'hrst čerstvých listů koriandru, nasekaných', 'sůl a černý pepř'] }],
+      en: [{ sub: '', items: ['250g chana dal, rinsed', '3 tbsp vegetable oil', '1 tbsp cumin seeds', '1 small onion, chopped', '3–4 whole green chillies, pierced', '2 cm fresh ginger, julienned', '3 garlic cloves, whole', '3 tomatoes', '¾ tsp ground turmeric', '¾ tsp garam masala', '1½ tsp ground coriander', 'handful fresh coriander leaves, chopped', 'salt and black pepper'] }]
+    },
+    steps: {
+      cs: ['Čočku a 900 ml vody dejte do hrnce, přiveďte k varu. Seberte pěnu, přikryjte a vařte na mírném plameni 35–40 minut, dokud čočka nezměkne.',
+           'Uvařenou čočku metličkou rozbijte na hladkou kaši. Odstavte a nechte zhoustnout.',
+           'Na pánvi rozehřejte olej, přidejte kmínová semínka a smažte 20–30 sekund do vůně.',
+           'Přidejte cibuli, chilli a zázvor, opékejte 4–5 minut dozlatova.',
+           'Česnek a rajčata rozmixujte na kaši, přidejte do pánve. Přidejte koření a 100 ml vody, vařte 15–20 minut, dokud olej nevystoupí na povrch.',
+           'Přidejte uvařenou čočku, promíchejte, podle potřeby dolijte vodu. Přiveďte k varu, dochuťte solí a pepřem.',
+           'Těsně před podáváním vmíchejte nasekaný čerstvý koriandr.'],
+      en: ['Put dal and 900ml water in a pot, bring to the boil. Skim foam, cover and simmer on low heat for 35–40 minutes until lentils are soft.',
+           'Whisk the cooked dal until smooth. Set aside to thicken.',
+           'Heat oil in a pan. Add cumin seeds and fry for 20–30 seconds until fragrant.',
+           'Add onion, chilli and ginger, sauté for 4–5 minutes until golden.',
+           'Blend garlic and tomatoes to a paste, add to the pan. Add spices and 100ml water, cook 15–20 minutes until oil separates.',
+           'Add the cooked dal, stir well, add water as needed. Bring to a boil, season with salt and pepper.',
+           'Stir in fresh chopped coriander just before serving.']
+    }
+  },
+  {
+    id: 3, cat: 'european', emoji: '🍄', time: '50 min',
+    diff: { cs: 'střední', en: 'medium' },
+    name: { cs: 'Houbové Bourguignon', en: 'Mushroom Bourguignon' },
+    desc: { cs: 'Vegetariánská interpretace francouzského klasika s Pinot Noir a hedvábnou bramborovou kaší', en: 'Vegetarian take on the French classic with Pinot Noir and silky mashed potato' },
+    catLabel: { cs: 'Francouzská kuchyně', en: 'French Cuisine' },
+    ing: {
+      cs: [{ sub: '', items: ['500 g hnědých žampionů, na čtvrtiny', '3 mrkve, šikmá kolečka 1,5–2 cm', '1 pórek (nebo 2 šalotky), na půlměsíčky', '3 stroužky česneku, na plátky', '200 ml suchého červeného vína (Pinot Noir)', '400 ml zeleninového vývaru', '1 lžíce rajčatového protlaku', 'tymián, bobkový list, sůl, pepř', '1 lžíce hladké mouky', 'oříšek studeného másla na dokončení'] }],
+      en: [{ sub: '', items: ['500g brown mushrooms, quartered', '3 carrots, sliced diagonally 1.5–2 cm', '1 leek (or 2 shallots), sliced', '3 garlic cloves, sliced', '200ml dry red wine (Pinot Noir)', '400ml vegetable stock', '1 tbsp tomato paste', 'thyme, bay leaf, salt, pepper', '1 tbsp plain flour', 'knob of cold butter to finish'] }]
+    },
+    steps: {
+      cs: ['Na silném plameni zprudka opečte žampiony — musí být v jedné vrstvě, aby se opékaly, ne dusily. Jakmile zhnědnou, vyjměte je stranou.',
+           'Snižte výkon. Do stejné pánve dejte pórek (nebo šalotky) a mrkev. Restujte cca 5 minut.',
+           'Přidejte česnek a protlak. Restujte 30–60 sekund, dokud česnek nezačne vonět.',
+           'Zaprašte moukou, promíchejte a zalijte vínem. Seškrábejte přípečky ode dna. Nechte víno odpařit na polovinu.',
+           'Přilijte vývar, přidejte bylinky a vraťte houby. Duste pod pokličkou 20–25 minut, dokud mrkev není "al dente".',
+           'Vypněte a vložte oříšek studeného másla. Míchejte, dokud se nerozpustí a omáčka se nezačne lesknout.'],
+      en: ['Sear mushrooms on high heat — they must be in one layer to brown, not steam. Once golden, remove to a plate.',
+           'Reduce heat. In the same pan, cook leek (or shallots) and carrots for about 5 minutes.',
+           'Add garlic and tomato paste. Sauté for 30–60 seconds until fragrant.',
+           'Dust with flour, stir, then pour in wine. Scrape up any bits from the bottom. Let wine reduce by half.',
+           'Add stock, herbs and return mushrooms. Simmer covered for 20–25 minutes until carrots are al dente.',
+           'Turn off heat and stir in a knob of cold butter until the sauce turns glossy.']
+    },
+    tip: { cs: 'Servírujte s bramborovou kaší s česnekovou infuzí: zahřejte mléko s rozmáčknutými stroužky česneku a tymiánem, sceďte, pak vmíchejte do uvařených brambor s máslem.', en: 'Serve with garlic-infused mash: heat milk with crushed garlic cloves and thyme, strain, then whip into boiled potatoes with butter.' }
+  },
+  {
+    id: 4, cat: 'european', emoji: '🧀', time: '35 min',
+    diff: { cs: 'snadné', en: 'easy' },
+    name: { cs: 'Pečené Halloumi s cizrnou a medovocitronovým dresinkem', en: 'Baked Halloumi with Chickpeas & Honey-Lemon Dressing' },
+    desc: { cs: 'Zlatavý halloumi s křupavou cizrnou, cherry rajčaty a lehkým medovocitronovým dresinkem', en: 'Golden halloumi with crispy chickpeas, cherry tomatoes and a light honey-lemon dressing' },
+    catLabel: { cs: 'Středomořská kuchyně', en: 'Mediterranean' },
+    ing: {
+      cs: [
+        { sub: 'Základ', items: ['2 balení sýra Halloumi, plátky 1,5 cm', '1 plechovka cizrny — důkladně OSUŠENÁ (klíč ke křupavosti)', '250 g cherry rajčat, celá', '1 červená cibule, na měsíčky', 'olivový olej, sušené oregano, sůl, pepř'] },
+        { sub: 'Dresink', items: ['3 lžíce olivového oleje', '1 lžíce medu', 'šťáva z ½ citronu'] }
+      ],
+      en: [
+        { sub: 'Base', items: ['2 packs halloumi, sliced 1.5 cm', '1 can chickpeas — THOROUGHLY dried (key to crispiness)', '250g cherry tomatoes, whole', '1 red onion, cut into wedges', 'olive oil, dried oregano, salt, pepper'] },
+        { sub: 'Dressing', items: ['3 tbsp olive oil', '1 tbsp honey', 'juice of ½ lemon'] }
+      ]
+    },
+    steps: {
+      cs: ['Troubu předehřejte na 200 °C (horkovzduch).',
+           'Na plech dejte osušenou cizrnu, rajčata a cibuli. Zakápněte olivovým olejem, osolte a zasypejte oreganem. Pečte 15–20 minut.',
+           'Plech vytáhněte, mezi zeleninu poklaďte plátky halloumi. Vraťte do trouby na 10–12 minut (nebo pod gril na 5 minut) dozlatova.',
+           'Ihned po vytažení přelijte dresinkem z olivového oleje, medu a citronové šťávy.',
+           'Tip: Tortillu nakrájejte na trojúhelníky, opečte dozlatova — vzniknou skvělé chipsy.'],
+      en: ['Preheat oven to 200°C fan.',
+           'On a baking tray, spread dried chickpeas, tomatoes and onion. Drizzle with olive oil, season, sprinkle generously with oregano. Roast 15–20 minutes.',
+           'Remove tray, lay halloumi slices among the vegetables. Return to oven for 10–12 minutes (or 5 min under grill) until golden.',
+           'Immediately drizzle with the dressing: olive oil, honey and lemon juice.',
+           'Tip: Cut a tortilla into triangles and dry-toast until crispy — they make great scooping chips.']
+    }
+  },
+  {
+    id: 5, cat: 'indian', emoji: '🫙', time: '120 min',
+    diff: { cs: 'náročné', en: 'advanced' },
+    name: { cs: 'Punjabi Dal Makhani', en: 'Punjabi Dal Makhani' },
+    desc: { cs: 'Bohatý hedvábný dal z urad čočky a červených fazolí s máslem a smetanou — čím déle se dusí, tím lépe chutná', en: 'Rich silky dal from urad lentils and kidney beans with butter and cream — the longer it simmers, the better it tastes' },
+    catLabel: { cs: 'Indická kuchyně', en: 'Indian Cuisine' },
+    ing: {
+      cs: [{ sub: '', items: ['¾ šálku (140 g) celé urad dal', '¼ šálku (40 g) červených fazolí (rajma)', '1 cibule, jemně nakrájená', '2 velká rajčata nebo 1 šálek rajčatového pyré', '2 lžičky zázvorovo-česnekové pasty', '1 zelená paprika, nakrájená', '3 lžíce másla', '¼ – ⅓ šálku smetany', '½ lžičky červeného chilli', '½ lžičky kmínu', '2–3 hřebíčky', '2–3 zelené kardamomy', '1 černý kardamom', '1 palcová skořice', '1 bobkový list', '¼ lžičky kasuri methi (sušená pískavice)', '2–3 špetky muškátového oříšku', 'sůl dle chuti'] }],
+      en: [{ sub: '', items: ['¾ cup (140g) whole urad dal', '¼ cup (40g) kidney beans (rajma)', '1 onion, finely chopped', '2 large tomatoes or 1 cup tomato puree', '2 tsp ginger-garlic paste', '1 green chilli, chopped', '3 tbsp butter', '¼ – ⅓ cup cream', '½ tsp red chilli powder', '½ tsp cumin seeds', '2–3 cloves', '2–3 green cardamoms', '1 black cardamom', '1 inch cinnamon', '1 bay leaf', '¼ tsp kasuri methi (dried fenugreek leaves)', '2–3 pinches nutmeg', 'salt to taste'] }]
+    },
+    steps: {
+      cs: ['Dal a fazole namočte na 8–9 hodin (přes noc). Propláchněte a slijte.',
+           'V tlakovém hrnci vařte s 3 šálky vody na vysokém plameni 18–20 píšťalek — obě luštěniny musí být úplně měkké (mohou se rozmáčknout prsty). V normálním hrnci 45–60 minut.',
+           'V hrnci rozehřejte máslo. Přidejte celé koření (kmín, hřebíčky, kardamomy, skořici, bobkový list) a restujte do vůně.',
+           'Přidejte cibuli a restujte dozlatova. Přidejte zázvorovo-česnekovou pastu a chilli, restujte.',
+           'Přidejte rajčatové pyré, chilli a muškátový oříšek. Vařte, dokud tuk nevystoupí na povrch.',
+           'Přidejte uvařený dal s fazolemi a vývar. Duste na mírném plameni bez pokličky 25 minut za pravidelného míchání.',
+           'Vmíchejte smetanu a kasuri methi. Dochuťte solí. Podávejte s rýží nebo naanem.'],
+      en: ['Soak dal and beans for 8–9 hours (overnight). Rinse and drain.',
+           'Pressure cook with 3 cups water on high for 18–20 whistles until completely soft (both should mash easily). Or cook in a pot for 45–60 minutes.',
+           'Heat butter in a pot. Add whole spices (cumin, cloves, cardamoms, cinnamon, bay leaf) and sauté until aromatic.',
+           'Add onion and sauté until golden. Add ginger-garlic paste and chilli, stir until raw aroma goes away.',
+           'Add tomato puree, chilli powder and nutmeg. Cook until fat separates from the mixture.',
+           'Add cooked dal and beans with their cooking stock plus 1 cup water. Simmer uncovered on low flame for 25 minutes, stirring often.',
+           'Stir in cream and crushed kasuri methi. Season with salt. Serve with rice or naan.']
+    }
+  },
+  {
+    id: 6, cat: 'european', emoji: '🎃', time: '75 min',
+    diff: { cs: 'střední', en: 'medium' },
+    name: { cs: 'Vegetariánská svíčková z dýně', en: 'Vegetarian "Svíčková" from Pumpkin' },
+    desc: { cs: 'Česká klasika v rostlinném provedení — pečená hokkaido dýně místo masa, smetanová omáčka, brusinky', en: 'Czech classic reimagined — roasted hokkaido pumpkin instead of beef, creamy sauce, cranberries' },
+    catLabel: { cs: 'Česká kuchyně', en: 'Czech Cuisine' },
+    ing: {
+      cs: [{ sub: '', items: ['800 g dýně Hokkaido, neoloupaná, na kostky ~3 cm', '2 mrkve', '2 petržele (kořen)', '½ velkého celeru', '3 velké žluté cibule', '250 ml smetany ke šlehání (min. 31 %)', '100 g ghí nebo řepkového oleje', '1 citron — šťáva i kůra', '1–2 lžíce plnotučné hořčice', 'ocet (lihový nebo jablečný)', '1–2 lžíce třtinového cukru', '4 bobkové listy', '6 kuliček nového koření', '10 kuliček pepře', 'špetka jedlé sody', 'zeleninový vývar ~1 litr', 'brusinky v gelu k servírování'] }],
+      en: [{ sub: '', items: ['800g hokkaido pumpkin, unpeeled, ~3 cm cubes', '2 carrots', '2 parsley roots', '½ large celeriac', '3 large yellow onions', '250ml whipping cream (min. 31%)', '100g ghee or rapeseed oil', '1 lemon — juice and zest', '1–2 tbsp full-fat mustard', 'vinegar (malt or apple)', '1–2 tbsp cane sugar', '4 bay leaves', '6 allspice berries', '10 peppercorns', 'pinch of baking soda', 'vegetable stock ~1 litre', 'cranberry jelly to serve'] }]
+    },
+    steps: {
+      cs: ['Dýni nakrájejte na kostky. V míse důkladně promíchejte s olejem a solí — každá kostka musí být obalená (zajistí Maillardovu reakci na celém povrchu). Pečte na papírem vyloženém plechu na 200 °C 20–30 minut, dokud okraje nezhnědnou.',
+           'V hrnci rozpalte tuk. Přidejte mrkev, celer a petržel, restujte dokud zelenina nepustí barvu do tuku.',
+           'Přidejte cibuli a restujte. Jakmile začne zlátit, přidejte špetku jedlé sody a cukr — nechte zkaramelizovat do tmavě hnědé. Přidejte lžíci octa.',
+           'Přidejte koření (bobkový list, nové koření, pepř) a hořčici. Hořčici nechte krátce "vypražit", dokud nezačne vonět.',
+           'Přidejte upečenou dýni, zalijte vývarem tak, aby byla zelenina mírně ponořená. Vařte 15 minut.',
+           'Vyjměte celé koření a rozmixujte dohladka. Dýně omáčku přirozeně zahustí — není třeba mouka. Přidejte smetanu a přiveďte k varu.',
+           'Dolaďte solí, citronovou šťávou a octem. Podávejte s karlovarským knedlíkem a brusinkami.'],
+      en: ['Cut pumpkin into cubes. Thoroughly toss in a bowl with oil and salt — every cube must be coated for even Maillard browning. Roast on lined baking tray at 200°C for 20–30 minutes until edges brown.',
+           'Heat fat in a pot. Add carrots, celeriac and parsley root, sauté until vegetables release colour into the fat.',
+           'Add onions, continue sautéing. Once golden, add a pinch of baking soda and sugar — let caramelise to deep brown. Add a splash of vinegar.',
+           'Add whole spices and mustard, let the mustard "toast" briefly until fragrant.',
+           'Add the roasted pumpkin, cover with stock so vegetables are just submerged. Cook 15 minutes.',
+           'Remove whole spices and blend until smooth. The pumpkin naturally thickens the sauce — no flour needed. Add cream and bring to a boil.',
+           'Season with salt, lemon juice and vinegar. Serve with bread dumplings and cranberry jelly.']
+    }
+  },
+  {
+    id: 7, cat: 'indian', emoji: '🟢', time: '40 min',
+    diff: { cs: 'střední', en: 'medium' },
+    name: { cs: 'Matar Paneer', en: 'Matar Paneer' },
+    desc: { cs: 'Klasické indické jídlo s čerstvým sýrem paneer a hráškem v aromatické kešu-rajčatové masale', en: 'Classic Indian dish with fresh paneer cheese and peas in an aromatic cashew-tomato masala' },
+    catLabel: { cs: 'Indická kuchyně', en: 'Indian Cuisine' },
+    ing: {
+      cs: [
+        { sub: 'Masala pasta', items: ['10–12 kešu, nasekané', '1–2 zelené papriky', '2–3 stroužky česneku', '3 rajčata, zhruba nakrájená', '½ palce zázvoru', '1 střední cibule', '2–3 hřebíčky', '½ palce skořice', '1 lžička celého koriandru', '4–5 celých černých pepřů', '2 lžíce listů koriandru'] },
+        { sub: 'Matar paneer', items: ['250–300 g paneer, na kostky', '1 šálek hrášku (čerstvý nebo mražený)', '2–2,5 lžíce oleje nebo ghí', '½ lžičky kmínu', '¼ lžičky kurkumy', '¼–½ lžičky červeného chilli', '¼–½ lžičky garam masala', '½ lžičky cukru', '1 lžíce smetany (volitelně)', 'sůl dle chuti', 'listy koriandru na ozdobu'] }
+      ],
+      en: [
+        { sub: 'Masala paste', items: ['10–12 cashews, chopped', '1–2 green chillies', '2–3 garlic cloves', '3 ripe tomatoes, roughly chopped', '½ inch ginger', '1 medium onion', '2–3 cloves', '½ inch cinnamon', '1 tsp coriander seeds', '4–5 whole black peppercorns', '2 tbsp coriander leaves'] },
+        { sub: 'Matar paneer', items: ['250–300g paneer, cubed', '1 cup peas (fresh or frozen)', '2–2.5 tbsp oil or ghee', '½ tsp cumin seeds', '¼ tsp turmeric', '¼–½ tsp red chilli', '¼–½ tsp garam masala', '½ tsp sugar', '1 tbsp cream (optional)', 'salt to taste', 'coriander leaves to garnish'] }
+      ]
+    },
+    steps: {
+      cs: ['Všechny ingredience na masala pastu rozmixujte dohladka bez přidání vody. Odložte.',
+           'Rozehřejte olej nebo ghí. Přidejte kmínová semínka a nechte přeskočit.',
+           'Přidejte masala pastu a restujte 10–12 minut na mírném plameni, dokud se olej neoddělí od pasty.',
+           'Přidejte kurkumu, chilli a garam masala. Volitelně přidejte smetanu a minutu restujte.',
+           'Přidejte hrášek, vodu a sůl. V tlakovém hrnci 2–3 písknutí, nebo v hrnci vařte do měkka.',
+           'Přidejte kostky paneer, duste 1–2 minuty na mírném plameni. Nepřevařujte — paneer se stane tvrdým!',
+           'Ozdobte lístky koriandru. Podávejte s roti, parathou, naanem nebo rýží.'],
+      en: ['Blend all masala paste ingredients until completely smooth — no added water needed. Set aside.',
+           'Heat oil or ghee. Add cumin seeds and let them splutter.',
+           'Add masala paste and sauté on low-medium flame for 10–12 minutes until oil separates from the paste.',
+           'Add turmeric, chilli and garam masala. Optionally stir in cream for a minute.',
+           'Add peas, water and salt. Pressure cook for 2–3 whistles, or cook in a pot until peas are soft.',
+           'Add paneer cubes and simmer for 1–2 minutes on low flame. Do not overcook — paneer becomes dense and rubbery!',
+           'Garnish with coriander leaves. Serve with roti, paratha, naan or rice.']
+    }
+  },
+  {
+    id: 8, cat: 'european', emoji: '🥦', time: '45 min',
+    diff: { cs: 'snadné', en: 'easy' },
+    name: { cs: 'Zapečená brabantská zelenina', en: 'Belgian-Style Vegetable Gratin' },
+    desc: { cs: 'Květák a brambory zapečené s ricottou, vejci, smetanou a trojitou sýrovou krustou — sytné rodinné jídlo', en: 'Cauliflower and potato bake with ricotta, eggs, cream and a triple-cheese crust — hearty family dinner' },
+    catLabel: { cs: 'Evropská kuchyně', en: 'European Cuisine' },
+    ing: {
+      cs: [{ sub: 'Pro 4–5 osob', items: ['2 větší květáky (nebo 1 květák + 1 kg brokolice)', '1,2 kg brambor, oloupaných, na 1 cm plátky', '2 × 250 g Ricotta', '8 vajec', '500 ml smetany 31–33 %', '300 g Gouda nebo Eidam', '100 g Niva (nebo jiný modrý sýr)', '150 g Mozzarella (na strouhání)', 'sůl, čerstvý pepř, hodně muškátového oříšku', '3 stroužky česneku (do smetany)', 'máslo a strouhanka na formu'] }],
+      en: [{ sub: 'Serves 4–5', items: ['2 large cauliflowers (or 1 cauli + 1 kg broccoli)', '1.2 kg potatoes, peeled, sliced 1 cm', '2 × 250g ricotta', '8 eggs', '500ml cream 31–33%', '300g Gouda or Edam', '100g blue cheese (Niva or similar)', '150g mozzarella (grating type)', 'salt, fresh pepper, plenty of nutmeg', '3 garlic cloves (for the cream)', 'butter and breadcrumbs for the dish'] }]
+    },
+    steps: {
+      cs: ['Brambory vhoďte do vroucí osolené vody. Po 8 minutách přidejte růžičky květáku a vařte dalších 5 minut. Sceďte a nechte 2–3 minuty "vydýchat" v cedníku — klíčové proti vodnatosti.',
+           'V míse rozmačkejte Ricottu s vejci na hladkou kaši. Teprve pak přilévejte smetanu (obráceně by Ricotta tvořila hrudky). Nivu nechte v kusech — v troubě se rozplyne.',
+           'Do smetanové směsi přidejte nasekaný česnek, sůl, pepř a hodně muškátového oříšku.',
+           'Pekáč vymažte máslem a vysypejte strouhankou — zabrání přichycení a na dně vznikne chutná křupavá vrstva.',
+           'Brambory a zeleninu promíchejte v pekáči. Zalijte smetanovou směsí. Celý povrch zasypejte zbylými sýry (350–400 g).',
+           'Pečte na 180 °C (horkovzduch) 30–35 minut. Sýr musí být zlatohnědý a puchýřatý. Test: zapíchnutý nůž vyjde čistý nebo jen se sýrem.'],
+      en: ['Drop potatoes into boiling salted water. After 8 minutes add cauliflower florets and cook another 5 minutes. Drain and steam-dry in colander for 2–3 minutes — prevents a watery dish.',
+           'In a bowl, mash ricotta with eggs until smooth. Only then add the cream (doing it the other way creates lumps). Leave blue cheese in chunks — it melts in the oven.',
+           'Add chopped garlic, salt, pepper and plenty of nutmeg to the cream mixture.',
+           'Butter the baking dish and coat with breadcrumbs — prevents sticking and creates a delicious crispy base.',
+           'Mix potatoes and vegetables in the dish. Pour over the cream mixture. Cover entire surface with remaining cheeses (350–400 g).',
+           'Bake at 180°C fan for 30–35 minutes. Cheese must be golden-brown and bubbly. Test: a knife inserted in the centre comes out clean or just with cheese.']
+    },
+    tip: { cs: 'Chceš ještě více řízu? Zamíchej do smetany lžíci plnotučné hořčice.', en: 'Want extra punch? Stir a tablespoon of full-fat mustard into the cream mixture.' }
+  },
+  {
+    id: 9, cat: 'indian', emoji: '🍚', time: '25 min',
+    diff: { cs: 'snadné', en: 'easy' },
+    name: { cs: 'Rádžasthánská rýže s rozinkami', en: 'Rajasthani Spiced Rice with Raisins' },
+    desc: { cs: 'Jednoduché tradiční jídlo z Rádžasthánu — kari rýže s brambory, hráškem a sladkými rozinkami', en: 'Simple traditional dish from Rajasthan — spiced rice with potatoes, peas and sweet raisins' },
+    catLabel: { cs: 'Indická kuchyně', en: 'Indian Cuisine' },
+    ing: {
+      cs: [{ sub: '', items: ['280 g rýže — propláchnutá 10×!', '4 menší brambory', '2 malé cibule', '6 malých rajčat, nakrájených', 'hrst světlých rozinek', '2–3 lžíce hrášku', '2,5 lžičky kari koření', '1 lžičku chilli', '1,5 lžičky soli', 'zarovnaná malá lžička kmínu', 'voda — dvojnásobek objemu rýže'] }],
+      en: [{ sub: '', items: ['280g rice — rinse 10 times!', '4 small potatoes', '2 small onions', '6 small tomatoes, chopped', 'handful of light raisins', '2–3 tbsp peas', '2.5 tsp curry powder', '1 tsp chilli', '1.5 tsp salt', '1 level small tsp cumin', 'water — double the volume of rice'] }]
+    },
+    steps: {
+      cs: ['V rozpalené pánvi s tukem restujte kmín půl minuty.',
+           'Přidejte kari, chilli a sůl — zamíchejte. Po pár sekundách zalijte vodou.',
+           'Přidejte hrášek, cibulku a brambory, přiveďte do varu.',
+           'Přidejte dobře propláchnutou rýži. Přikryjte a vařte dokud se nevyvaří voda (~10 minut). Během vaření neodkrývat!',
+           'Po vyvaření vody vypněte sporák, pod pokličku přihoďte rajčata a rozinky a znovu přikryjte na 2 minuty.'],
+      en: ['In a hot pan with fat, fry cumin for half a minute.',
+           'Add curry, chilli and salt — stir. After a few seconds add the water.',
+           'Add peas, onion and potatoes, bring to the boil.',
+           'Add the well-rinsed rice. Cover and cook until all water is absorbed (~10 minutes). Do not lift the lid during cooking!',
+           'Once water is absorbed, turn off heat, add tomatoes and raisins under the lid, cover again for 2 minutes.']
+    }
+  },
+  {
+    id: 10, cat: 'dessert', emoji: '🥛', time: '50 min',
+    diff: { cs: 'snadné', en: 'easy' },
+    name: { cs: 'Rýžový kheer (Chawal ki Kheer)', en: 'Rice Kheer (Chawal ki Kheer)' },
+    desc: { cs: 'Tradiční indický rýžový dezert s kardamomem, šafránem a nasekanými oříšky — podává se teplý i studený', en: 'Traditional Indian rice pudding with cardamom, saffron and chopped nuts — served warm or chilled' },
+    catLabel: { cs: 'Indický dezert', en: 'Indian Dessert' },
+    ing: {
+      cs: [{ sub: '4 porce', items: ['1 litr plnotučného mléka', '70 g bílé rýže — nejlépe basmati', '70–80 g cukru dle chuti', '3–4 zelené kardamomové tobolky', 'špetka šafránu (volitelně)', '2 lžíce nasekaných mandlí nebo pistácií'] }],
+      en: [{ sub: 'Serves 4', items: ['1 litre whole milk', '70g white rice — basmati preferred', '70–80g sugar to taste', '3–4 green cardamom pods', 'pinch of saffron (optional)', '2 tbsp chopped almonds or pistachios'] }]
+    },
+    steps: {
+      cs: ['Rýži několikrát propláchni ve studené vodě, dokud není voda čirá.',
+           'Do hrnce nalij mléko a přiveď k varu. Rozmáčkni kardamomové tobolky a přidej do mléka.',
+           'Přidej rýži a ztlum plamen. Vař pomalu na mírném ohni 35–40 minut, často míchej, aby se nepřichytila.',
+           'Vmíchej cukr a volitelně šafrán. Nech ještě 5 minut prolnout chutě.',
+           'Odstav, posyp nasekanými oříšky a nech trochu zchladnout.',
+           'Podávej teplý nebo vychlazeně ze lednice. Studený chutná krémověji.',
+           'Variace: do studeného základu lze vmíchat čerstvé ovoce (jahody, banán, pomeranč) nebo přidat trochu kokosového mléka.'],
+      en: ['Rinse rice several times in cold water until water runs clear.',
+           'Pour milk into a pot and bring to the boil. Lightly crush cardamom pods and add to the milk.',
+           'Add rice and reduce heat. Simmer on low heat for 35–40 minutes, stirring frequently to prevent sticking.',
+           'Stir in sugar and optionally saffron. Cook another 5 minutes to let flavours meld.',
+           'Remove from heat, sprinkle with chopped nuts and allow to cool slightly.',
+           'Serve warm or well chilled from the fridge. Cold kheer tastes creamier.',
+           'Variations: once cooled, fold in fresh fruit (strawberries, banana, orange) or add a splash of coconut milk.']
+    }
+  }
+];
+
+/* ── STATE & i18n ──────────────────────────────────────────────────────────── */
+
+let lang = 'cs';
+let activeFilter = 'all';
+
+const t = {
+  cs: {
+    heroLabel: '🥬 Ověřené recepty',
+    heroTitle: '<em>Vegetariánské</em> recepty',
+    heroSub: 'Naše oblíbená rodinná jídla z celého světa',
+    searchPlaceholder: 'Hledat recept…',
+    countLabel: 'receptů',
+    logoText: '🌿 <span class="accent">Naše</span> recepty',
+    ingredients: 'Suroviny',
+    steps: 'Postup',
+    tip: '💡 Tip',
+    time: '⏱',
+    noResults: 'Žádné recepty neodpovídají vyhledávání.',
+    footerText: 'Naše oblíbené vegetariánské recepty · Vždy dostupné',
+    filterLabels: ['Vše','🇮🇳 Indická','🇪🇺 Evropská','🍮 Dezerty']
+  },
+  en: {
+    heroLabel: '🥬 Tried & tested',
+    heroTitle: '<em>Vegetarian</em> Recipes',
+    heroSub: 'Our favourite family dishes from around the world',
+    searchPlaceholder: 'Search recipes…',
+    countLabel: 'recipes',
+    logoText: '🌿 <span class="accent">Our</span> Recipes',
+    ingredients: 'Ingredients',
+    steps: 'Method',
+    tip: '💡 Tip',
+    time: '⏱',
+    noResults: 'No recipes match your search.',
+    footerText: 'Our favourite vegetarian recipes · Always available',
+    filterLabels: ['All','🇮🇳 Indian','🇪🇺 European','🍮 Desserts']
+  }
+};
+
+/* ── LANGUAGE ──────────────────────────────────────────────────────────────── */
+
+function setLang(l) {
+  lang = l;
+  document.getElementById('btn-cs').classList.toggle('active', l === 'cs');
+  document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  document.getElementById('hero-label').textContent = t[l].heroLabel;
+  document.getElementById('hero-title').innerHTML = t[l].heroTitle;
+  document.getElementById('hero-sub').textContent = t[l].heroSub;
+  document.getElementById('search-input').placeholder = t[l].searchPlaceholder;
+  document.getElementById('logo').innerHTML = t[l].logoText;
+  document.getElementById('footer-text').textContent = t[l].footerText;
+  document.getElementById('count-label').textContent = t[l].countLabel;
+  // Update filter buttons
+  const btns = document.querySelectorAll('.filter-btn');
+  btns.forEach((btn, i) => { btn.textContent = t[l].filterLabels[i]; });
+  renderGrid();
+}
+
+/* ── FILTER ────────────────────────────────────────────────────────────────── */
+
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid();
+}
+
+/* ── GRID ──────────────────────────────────────────────────────────────────── */
+
+function renderGrid() {
+  const q = document.getElementById('search-input').value.toLowerCase().trim();
+  const grid = document.getElementById('grid');
+
+  const filtered = recipes.filter(r => {
+    const matchF = activeFilter === 'all' || r.cat === activeFilter;
+    const matchQ = !q ||
+      r.name.cs.toLowerCase().includes(q) ||
+      r.name.en.toLowerCase().includes(q) ||
+      r.desc.cs.toLowerCase().includes(q) ||
+      r.desc.en.toLowerCase().includes(q) ||
+      r.catLabel.cs.toLowerCase().includes(q) ||
+      r.catLabel.en.toLowerCase().includes(q);
+    return matchF && matchQ;
+  });
+
+  document.getElementById('count-num').textContent = filtered.length;
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="no-results"><div class="nr-icon">🔍</div>${t[lang].noResults}</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map((r, i) => `
+    <article class="recipe-card" onclick="openModal(${r.id})" role="button" tabindex="0"
+      onkeydown="if(event.key==='Enter')openModal(${r.id})"
+      style="animation-delay:${Math.min(i,6)*0.04}s">
+      <span class="card-emoji">${r.emoji}</span>
+      <div class="card-cat">${r.catLabel[lang]}</div>
+      <div class="card-name">${r.name[lang]}</div>
+      <div class="card-desc">${r.desc[lang]}</div>
+      <div class="card-meta">
+        <span>${t[lang].time} ${r.time}</span>
+        <span>◎ ${r.diff[lang]}</span>
+      </div>
+    </article>
+  `).join('');
+}
+
+/* ── MODAL ─────────────────────────────────────────────────────────────────── */
+
+function openModal(id) {
+  const r = recipes.find(x => x.id === id);
+  if (!r) return;
+
+  document.getElementById('m-emoji').textContent = r.emoji;
+  document.getElementById('m-cat').textContent = r.catLabel[lang];
+  document.getElementById('m-name').textContent = r.name[lang];
+  document.getElementById('m-desc').textContent = r.desc[lang];
+  document.getElementById('m-meta').innerHTML = `
+    <span>${t[lang].time} ${r.time}</span>
+    <span style="margin-left:4px">◎ ${r.diff[lang]}</span>
+  `;
+
+  // Build ingredients
+  let html = `<div class="section-title">${t[lang].ingredients}</div>`;
+  const ings = r.ing[lang] || r.ing.cs;
+  ings.forEach(sec => {
+    if (sec.sub) html += `<div class="sub-label">${sec.sub}</div>`;
+    html += `<ul class="ing-list">` + sec.items.map(i => `<li><span class="ing-dot"></span>${i}</li>`).join('') + `</ul>`;
+  });
+
+  // Build steps
+  html += `<div class="section-title">${t[lang].steps}</div>`;
+  html += `<ol class="steps-list">`;
+  const steps = r.steps[lang] || r.steps.cs;
+  steps.forEach((s, i) => {
+    html += `<li><span class="step-num">${i + 1}</span><span>${s}</span></li>`;
+  });
+  html += `</ol>`;
+
+  // Tip
+  if (r.tip) {
+    const tipTxt = (r.tip[lang] || r.tip.cs);
+    html += `<div class="section-title">${t[lang].tip}</div><div class="tip-box">${tipTxt}</div>`;
+  }
+
+  document.getElementById('m-body').innerHTML = html;
+
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Scroll modal to top
+  document.getElementById('modal').scrollTop = 0;
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ── INIT ──────────────────────────────────────────────────────────────────── */
+
+renderGrid();
+</script>
+</body>
+</html>
