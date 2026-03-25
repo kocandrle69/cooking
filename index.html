@@ -38,32 +38,35 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'Outfit', system-ui, sans-serif;
   color: var(--text);
-  background: var(--bg);
+  background: var(--bg-dark);
   min-height: 100vh;
-  display: flex; /* Fix pro footer */
-  flex-direction: column; /* Fix pro footer */
   margin: 0;
+  display: flex;
+  flex-direction: column; /* Základ pro fix footeru */
   overflow-x: hidden;
 }
 
-/* Fixní paralaxní pozadí */
+/* Fixní pozadí s fotografií a overlayem */
 body::before {
   content: '';
-  position: fixed; 
-  inset: 0; 
-  z-index: -1; /* Musí být pod obsahem */
-  /* Zde vložte URL vašeho obrázku z druhé verze */
-  background-image: linear-gradient(rgba(8, 11, 15, 0.85), rgba(8, 11, 15, 0.92)), 
-                    url('https://images.unsplash.com/photo-1556761223-4c4282c73f77?q=80&w=2000'); 
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  /* Zde je kombinace tmavého gradientu a obrázku z druhé verze */
+  background: 
+    linear-gradient(160deg, rgba(8,11,15,0.92) 0%, rgba(8,11,15,0.85) 50%, rgba(8,11,15,0.95) 100%),
+    url('https://images.unsplash.com/photo-1556761223-4c4282c73f77?q=80&w=2000'); /* Zde případně změňte cestu k fotce */
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-/* Hlavní obsah se musí roztáhnout, aby vytlačil footer dolů */
+/* Zajištění, že main zabere veškerý volný prostor a odtlačí footer */
 main {
   flex: 1 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 /* Subtle noise texture */
