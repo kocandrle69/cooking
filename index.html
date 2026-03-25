@@ -46,16 +46,17 @@ body {
   overflow-x: hidden;
 }
 
-/* Fixní pozadí s fotografií a overlayem */
+/* Fixní pozadí s vaší fotografií a overlayem */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
-  /* Zde je kombinace tmavého gradientu a obrázku z druhé verze */
   background: 
+    /* Gradient, který zajistí, že text bude čitelný i přes světlé části fotky */
     linear-gradient(160deg, rgba(8,11,15,0.92) 0%, rgba(8,11,15,0.85) 50%, rgba(8,11,15,0.95) 100%),
-    url('https://images.unsplash.com/photo-1556761223-4c4282c73f77?q=80&w=2000'); /* Zde případně změňte cestu k fotce */
+    /* Odkaz na váš soubor */
+    url('cooking-background 3.jpg'); 
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
