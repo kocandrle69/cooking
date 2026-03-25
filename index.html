@@ -40,18 +40,30 @@ body {
   color: var(--text);
   background: var(--bg);
   min-height: 100vh;
+  display: flex; /* Fix pro footer */
+  flex-direction: column; /* Fix pro footer */
+  margin: 0;
   overflow-x: hidden;
 }
 
-/* ── BACKGROUND — warm spice gradient mesh, no orbs ── */
+/* Fixní paralaxní pozadí */
 body::before {
   content: '';
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 80% 60% at 15% 0%,   rgba(212,168,75,0.13) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 90% 100%,  rgba(78,205,196,0.09) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 50% at 50% 50%,   rgba(180,80,40,0.07)  0%, transparent 70%),
-    linear-gradient(160deg, #0a0c10 0%, #080b0f 45%, #070a0d 100%);
+  position: fixed; 
+  inset: 0; 
+  z-index: -1; /* Musí být pod obsahem */
+  /* Zde vložte URL vašeho obrázku z druhé verze */
+  background-image: linear-gradient(rgba(8, 11, 15, 0.85), rgba(8, 11, 15, 0.92)), 
+                    url('https://images.unsplash.com/photo-1556761223-4c4282c73f77?q=80&w=2000'); 
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Hlavní obsah se musí roztáhnout, aby vytlačil footer dolů */
+main {
+  flex: 1 0 auto;
 }
 
 /* Subtle noise texture */
@@ -418,10 +430,18 @@ header {
 
 /* ── FOOTER ── */
 footer {
-  position: relative; z-index: 1; border-top: 1px solid var(--border);
-  padding: 22px 28px; text-align: center; color: var(--subtle); font-size: .8rem;
-  backdrop-filter: blur(var(--blur-md)); -webkit-backdrop-filter: blur(var(--blur-md));
-  background: rgba(6,8,14,.55);
+  flex-shrink: 0; /* Zabrání smrštění footeru */
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 32px 28px; /* Více místa pro lepší vzhled */
+  text-align: center;
+  color: var(--subtle);
+  font-size: .8rem;
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  background: rgba(6, 8, 14, 0.8);
+  margin-top: 40px;
 }
 
 /* ── ANIMATIONS ── */
