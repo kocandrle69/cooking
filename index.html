@@ -51,8 +51,8 @@ body {
   background: var(--bg);
   min-height: 100vh;
   margin: 0;
-  display: flex; /* Důležité pro footer */
-  flex-direction: column; /* Důležité pro footer */
+  display: flex;
+  flex-direction: column;
   overflow-x: hidden;
 }
 
@@ -70,14 +70,12 @@ body::before {
   filter: brightness(0.85) contrast(1.05);
 }
 
-/* Zajištění, že main zabere veškerý volný prostor a odtlačí footer */
 main {
   flex: 1 0 auto;
   position: relative;
   z-index: 1;
 }
 
-/* Subtle noise texture */
 body::after {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.025;
@@ -215,7 +213,7 @@ header {
 /* ── MAIN WRAP ── */
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
 
-/* ── FEATURED CARD (Maillard — full width) ── */
+/* ── FEATURED CARD ── */
 .featured-card {
   position: relative; overflow: hidden;
   background: rgba(25,18,8,0.65);
@@ -237,7 +235,6 @@ header {
   transform: translateY(-2px);
   box-shadow: 0 2px 0 inset rgba(255,255,255,.09), 0 32px 100px rgba(0,0,0,.45), 0 0 80px rgba(212,168,75,0.10);
 }
-/* Glowing heat effect — top left */
 .featured-card::before {
   content: '';
   position: absolute; top: -60px; left: -40px;
@@ -245,7 +242,6 @@ header {
   background: radial-gradient(circle, rgba(212,168,75,0.12) 0%, transparent 70%);
   pointer-events: none;
 }
-/* Right side vertical accent line */
 .featured-card::after {
   content: '';
   position: absolute; right: 0; top: 15%; bottom: 15%;
@@ -253,7 +249,6 @@ header {
   background: linear-gradient(180deg, transparent, rgba(212,168,75,.5), transparent);
   border-radius: 2px 0 0 2px;
 }
-.fc-left {}
 .fc-label {
   font-size: .7rem; font-weight: 600; letter-spacing: .14em;
   text-transform: uppercase; color: var(--gold);
@@ -346,7 +341,6 @@ header {
 .card-meta {
   display: flex; gap: 14px; font-size: .76rem; color: var(--subtle);
 }
-/* technique card in grid (when filtered to technique) */
 .card[data-cat="technique"] {
   border-color: rgba(212,168,75,0.22);
   background: rgba(30,20,8,0.55);
@@ -431,6 +425,7 @@ header {
   background: rgba(212,168,75,.05); border: 1px solid rgba(212,168,75,.17);
   border-radius: 16px; padding: 14px 18px;
   font-size: .88rem; font-weight: 300; line-height: 1.72; color: var(--muted);
+  white-space: pre-line;
 }
 .modal::-webkit-scrollbar { width: 4px; }
 .modal::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 4px; }
@@ -449,7 +444,7 @@ footer {
   text-align: center;
   background: rgba(8, 11, 15, 0.85);
   backdrop-filter: blur(20px);
-  margin-top: auto; /* Toto ho dotlačí dospodu */
+  margin-top: auto;
 }
 
 /* ── ANIMATIONS ── */
@@ -552,7 +547,74 @@ const R=[
 {id:10,cat:'dessert',emoji:'🥛',time:'50 min',diff:{cs:'snadné',en:'easy'},name:{cs:'Rýžový kheer (Chawal ki Kheer)',en:'Rice Kheer (Chawal ki Kheer)'},desc:{cs:'Tradiční indický rýžový dezert s kardamomem a šafránem',en:'Traditional Indian rice pudding with cardamom and saffron'},cat_l:{cs:'Indický dezert',en:'Indian Dessert'},ing:{cs:[{s:'4 porce',i:['1 litr plnotučného mléka','70 g bílé rýže (nejlépe basmati)','70–80 g cukru dle chuti','3–4 zelené kardamomové tobolky','špetka šafránu (volitelně)','2 lžíce nasekaných mandlí nebo pistácií']}],en:[{s:'Serves 4',i:['1 litre whole milk','70g white rice (basmati preferred)','70–80g sugar to taste','3–4 green cardamom pods','pinch of saffron (optional)','2 tbsp chopped almonds or pistachios']}]},steps:{cs:['Rýži propláchni, dokud není voda čirá.','Mléko přiveď k varu, přidej rozmáčknuté kardamomové tobolky.','Přidej rýži, ztlum plamen. Vař pomalu 35–40 min za častého míchání.','Vmíchej cukr a volitelně šafrán. Nech 5 min prolnout chutě.','Posyp oříšky. Podávej teplý nebo vychlazeně ze lednice.','Studený chutná krémověji. Variace: vmíchej čerstvé ovoce po vychladnutí.'],en:['Rinse rice until water runs clear.','Bring milk to the boil, add lightly crushed cardamom pods.','Add rice, reduce heat. Simmer gently 35–40 min, stirring frequently.','Stir in sugar and optionally saffron. Cook 5 more min.','Sprinkle with nuts. Serve warm or well chilled.','Chilled version tastes creamier. Variation: fold in fresh fruit once cooled.']},tip:{cs:'Základ je vždy stejný — mléko, rýže, kardamom, cukr. Ovoce přidávej vždy až do VYCHLAZENÉHO základu. 🍊 Pomeranč: vyfiletuj, zbav bílé slupky, přidej těsně před podáváním. 🍌 Banán: rozmačkej nebo rozmixuj 1–2 banány, vmíchej do studeného základu. 🍎 Jablko: nastrouhej (Gala, Fuji), krátce poduš na másle se skořicí, vychlaď a vmíchej. 🍓 Jahody: rozmixuj s trochou cukru, lehce vmíchej těsně před servírováním.',en:'The base is always the same — milk, rice, cardamom, sugar. Always add fruit to the COOLED base. 🍊 Orange: fillet, remove white pith, add just before serving. 🍌 Banana: mash or blend 1–2 bananas into the cold base. 🍎 Apple: grate (Gala, Fuji), briefly cook with butter and cinnamon, cool then fold in. 🍓 Strawberry: blend with a little sugar, fold in just before serving.'}},
 {id:11,cat:'european',emoji:'🍝',time:'40 min',diff:{cs:'střední',en:'medium'},name:{cs:'Čočkové boloňské (Beluga)',en:'Lentil Bolognese (Beluga)'},desc:{cs:'Hluboká chuť díky redukci červeného vína a černé čočce, která drží strukturu',en:'Deep flavour from red wine reduction and black lentils that hold their shape'},cat_l:{cs:'Italská kuchyně',en:'Italian Cuisine'},ing:{cs:[{s:'Pro 5 osob',i:['400 g černé čočky Beluga','2 × 400 g drcených rajčat','2 mrkve, 2 řapíkaté celerové stonky, 1 cibule','200 ml suchého červeného vína','500 ml zeleninového vývaru','2 lžíce rajčatového protlaku','750 g špaget','parmazán k servírování','olivový olej, sůl, pepř']}],en:[{s:'Serves 5',i:['400g Beluga lentils','2 × 400g crushed tomatoes','2 carrots, 2 celery stalks, 1 onion','200ml dry red wine','500ml vegetable stock','2 tbsp tomato paste','750g spaghetti','parmesan to serve','olive oil, salt, pepper']}]},steps:{cs:['Zeleninu (soffritto: mrkev, celer, cibule) restujte na olivovém oleji na středním plameni minimálně 10 minut — musí zhnědnout, ne jen změknout.','Přidejte rajčatový protlak a nechte ho 1–2 minuty karamelizovat přímo na dno pánve — odstraní kyselost a přidá hloubku.','Zalijte vínem a vyredukujte na polovinu (asi 3–4 minuty). Seškrábejte přípečky ode dna.','Přidejte čočku, drcená rajčata a vývar. Vařte bez pokličky 20–25 minut, dokud omáčka nezhoustne a čočka není al dente.','Dochuťte solí a pepřem. Podávejte se špagetami a parmazánem.'],en:['Sauté soffritto (carrot, celery, onion) in olive oil on medium heat for at least 10 minutes until properly browned, not just softened.','Add tomato paste and let it caramelise on the pan base for 1–2 minutes — removes acidity and adds depth.','Pour in wine and reduce by half (3–4 minutes). Scrape up any bits from the bottom.','Add lentils, crushed tomatoes and stock. Simmer uncovered 20–25 minutes until sauce is thick and lentils are al dente.','Season with salt and pepper. Serve with spaghetti and parmesan.']},tip:{cs:'Beluga čočka drží tvar i po uvaření — ideální pro boloňské. Zelená nebo hnědá čočka se rozkašovatí.',en:'Beluga lentils hold their shape after cooking — ideal for bolognese. Green or brown lentils turn mushy.'}},
 {id:12,cat:'basics',emoji:'🫕',time:'90 min',diff:{cs:'snadné',en:'easy'},name:{cs:'Pečený zeleninový vývar',en:'Roasted Vegetable Stock'},desc:{cs:'Tmavý, průhledný a chuťově hluboký vývar z pečené zeleniny — základ pro bourguignon, svíčkovou i polévky',en:'Dark, clear and deeply flavourful stock from roasted vegetables — base for bourguignon, svíčková and soups'},cat_l:{cs:'Základy kuchyně',en:'Kitchen Basics'},ing:{cs:[{s:'Na pečení (plech)',i:['Mrkev — nakrájená na kostičky','Petržel (kořen) — nakrájená na kostičky','Celer — nejvíce, základ vývaru','Lilek — přidá umami a hloubku','Olivový olej na promíchání']},{s:'Do hrnce',i:['Strouhaná mrkev + petržel (na osmažení na ghí)','Malinko hladké mouky (zahustí a emulguje)','Celá cibule ve slupce (dá barvu!!)','Nové koření — 5–6 kuliček','Bobkový list — 2 ks','Studená voda — cca 2 litry']}],en:[{s:'For roasting (tray)',i:['Carrots — diced','Parsley root — diced','Celeriac — the most, forms the base','Aubergine — adds umami and depth','Olive oil to coat']},{s:'Into the pot',i:['Grated carrot + parsley root (sautéed in ghee)','Small amount of plain flour (thickens and emulsifies)','Whole onion with skin (gives colour!)','Allspice — 5–6 berries','Bay leaf — 2 pcs','Cold water — approx 2 litres']}]},steps:{cs:['Zeleninu (mrkev, petržel, celer, lilek) nakrájej na kostičky. V míse důkladně promíchej s olejem — každý kousek musí být obalený. Rozlož na plech v jedné vrstvě.','Peč na 180 °C horkovzduch 35 minut, dokud zelenina pořádně nezhnědne. Tohle je základ chuti — nespěchej.','Mezitím nastrouhej mrkev a petržel, osmaž na ghí dokud nepustí barvu. Přidej malinko mouky (max 1 lžíce ať je vývar průhledný) a krátce promíchej — vznikne aromatický základ.','Do hrnce přidej základ z ghí (osmaženou mrkev a petržel s moukou), zalij studenou vodou, přidej celou cibuli ve slupce — ta dá vývaru tmavou barvu — nové koření a bobkový list.','Přiveď k varu, přidej upečenou zeleninu z plechu. Stáhni plamen na minimum — vývar musí jen malino probublávat, ne divoce vařit (jinak se zakalí).','Nech vývar vařit 30 minut na nejnižším plameni. Poté sceď přes jemné sítko. Výsledek: tmavý, průhledný a aromatický vývar.'],en:['Dice the vegetables (carrot, parsley root, celeriac, aubergine). Thoroughly toss with oil in a bowl — every piece must be coated. Spread on a tray in one layer.','Roast at 180°C fan for 35 minutes until properly browned. This is where the flavour is built — do not rush.','Meanwhile grate carrot and parsley root, sauté briefly in ghee until they release their colour. Add a small amount of flour (max 1 tbsp) and stir briefly — this forms the aromatic base.','Add the ghee base (sautéed grated carrot and parsley with flour) to a pot, cover with cold water. Add the whole onion with skin on — it gives the stock its dark colour — allspice and bay leaf.','Bring to the boil, then add the roasted vegetables from the tray. Reduce to the lowest heat — the stock must just barely bubble, never boil hard (or it will go cloudy).','Leave to simmer for about 30 minutes on the lowest heat. Strain through a fine sieve. Result: dark, clear and deeply aromatic stock.']},tip:{cs:'Přidej lžíci rajčatového protlaku přímo na zeleninu před pečením — zkaramelizuje a přidá další vrstvu chuti.',en:'Add a tablespoon of tomato paste directly onto the vegetables before roasting — it caramelises and adds another flavour layer.'}},
-{id:13,cat:'technique',emoji:'🔥',time:'5 min čtení',diff:{cs:'klíčová technika',en:'key technique'},name:{cs:'Maillardova reakce',en:'The Maillard Reaction'},desc:{cs:'Proč pečení zeleniny změní vše — stovky nových aromatických sloučenin, koncentrace chuti a základ celé vegetariánské kuchyně',en:'Why roasting vegetables changes everything — hundreds of new aromatic compounds, concentrated flavour and the foundation of vegetarian cooking'},cat_l:{cs:'Technika vaření',en:'Cooking Technique'},ing:{cs:[{s:'4 pravidla',i:['Sucho a prostor — zelenina nesmí být mokrá ani naskládaná na sobě','Teplota 180–220 °C horkovzduch — pod 160 °C reakce neprobíhá','Olej na každý kousek — promíchej v míse, ne jen zakápni','Trpělivost — 25–40 minut, okraje musí zhnědnout']}],en:[{s:'4 rules',i:['Dry and spaced — vegetables must not be wet or piled on each other','Temperature 180–220°C fan — below 160°C the reaction does not occur','Oil on every piece — toss in a bowl, do not just drizzle','Patience — 25–40 minutes, edges must brown']}]},steps:{cs:['Maso má přirozené výhody — tuk, kolagen, kostní vývar. Zelenina nic z toho nemá. Pokud ji jen uvaříš nebo dusíš, zůstaneš na povrchu.','Pečením nad 160 °C se spustí dva klíčové procesy: Maillardova reakce (aminokyseliny + cukry → stovky aromatických sloučenin) a karamelizace (přirozené cukry se transformují na komplexní hořkosladké tóny).','Navíc se odpaří voda — chuť se koncentruje 3–5×. Syrová mrkev chutná jako mrkev. Pečená mrkev chutná jako něco úplně jiného.','Prakticky: zeleninu nakrájej na stejně velké kousky, v míse důkladně promíchej s olejem (každý kousek musí být obalený), rozlož v jedné vrstvě na plech.','Peč na 180–220 °C dokud okraje nezhnědnou — ne zčernají, zhnědnou. Tohle je ta chvíle kdy vzniká hloubka chuti.','Vaření zeleniny dělá jídlo. Pečení zeleniny dělá chuť.'],en:['Meat has natural advantages — fat, collagen, bone stock. Vegetables have none of that. If you just boil or braise them, you stay on the surface.','Roasting above 160°C triggers two key processes: the Maillard reaction (amino acids + sugars → hundreds of aromatic compounds) and caramelisation (natural sugars transform into complex bittersweet tones).','Water also evaporates — flavour concentrates 3–5×. Raw carrot tastes like carrot. Roasted carrot tastes like something entirely different.','Practically: cut vegetables into equal-sized pieces, thoroughly toss with oil in a bowl (every piece must be coated), spread in one layer on a hot tray.','Roast at 180–220°C until edges brown — not blacken, brown. This is the moment when depth of flavour is created.','Boiling vegetables makes food. Roasting vegetables makes flavour.']}}
+{id:13,cat:'technique',emoji:'🔥',time:'5 min čtení',diff:{cs:'klíčová technika',en:'key technique'},name:{cs:'Maillardova reakce',en:'The Maillard Reaction'},desc:{cs:'Proč pečení zeleniny změní vše — stovky nových aromatických sloučenin, koncentrace chuti a základ celé vegetariánské kuchyně',en:'Why roasting vegetables changes everything — hundreds of new aromatic compounds, concentrated flavour and the foundation of vegetarian cooking'},cat_l:{cs:'Technika vaření',en:'Cooking Technique'},ing:{cs:[{s:'4 pravidla',i:['Sucho a prostor — zelenina nesmí být mokrá ani naskládaná na sobě','Teplota 180–220 °C horkovzduch — pod 160 °C reakce neprobíhá','Olej na každý kousek — promíchej v míse, ne jen zakápni','Trpělivost — 25–40 minut, okraje musí zhnědnout']}],en:[{s:'4 rules',i:['Dry and spaced — vegetables must not be wet or piled on each other','Temperature 180–220°C fan — below 160°C the reaction does not occur','Oil on every piece — toss in a bowl, do not just drizzle','Patience — 25–40 minutes, edges must brown']}]},steps:{cs:['Maso má přirozené výhody — tuk, kolagen, kostní vývar. Zelenina nic z toho nemá. Pokud ji jen uvaříš nebo dusíš, zůstaneš na povrchu.','Pečením nad 160 °C se spustí dva klíčové procesy: Maillardova reakce (aminokyseliny + cukry → stovky aromatických sloučenin) a karamelizace (přirozené cukry se transformují na komplexní hořkosladké tóny).','Navíc se odpaří voda — chuť se koncentruje 3–5×. Syrová mrkev chutná jako mrkev. Pečená mrkev chutná jako něco úplně jiného.','Prakticky: zeleninu nakrájej na stejně velké kousky, v míse důkladně promíchej s olejem (každý kousek musí být obalený), rozlož v jedné vrstvě na plech.','Peč na 180–220 °C dokud okraje nezhnědnou — ne zčernají, zhnědnou. Tohle je ta chvíle kdy vzniká hloubka chuti.','Vaření zeleniny dělá jídlo. Pečení zeleniny dělá chuť.'],en:['Meat has natural advantages — fat, collagen, bone stock. Vegetables have none of that. If you just boil or braise them, you stay on the surface.','Roasting above 160°C triggers two key processes: the Maillard reaction (amino acids + sugars → hundreds of aromatic compounds) and caramelisation (natural sugars transform into complex bittersweet tones).','Water also evaporates — flavour concentrates 3–5×. Raw carrot tastes like carrot. Roasted carrot tastes like something entirely different.','Practically: cut vegetables into equal-sized pieces, thoroughly toss with oil in a bowl (every piece must be coated), spread in one layer on a hot tray.','Roast at 180–220°C until edges brown — not blacken, brown. This is the moment when depth of flavour is created.','Boiling vegetables makes food. Roasting vegetables makes flavour.']},tip:null},
+
+/* ─── NOVÉ RECEPTY ─── */
+
+{id:14,cat:'indian',emoji:'🥥',time:'35 min',diff:{cs:'střední',en:'medium'},
+name:{cs:'Jemné kokosové kari s batátem',en:'Gentle Coconut Curry with Sweet Potato'},
+desc:{cs:'Krémové kari nasladko — batát, cizrna, kokos a limeta. Příjemné i pro jemnější palce.',en:'Gently sweet creamy curry — sweet potato, chickpeas, coconut and lime. Easy on delicate palates.'},
+cat_l:{cs:'Asijská kuchyně',en:'Asian Cuisine'},
+ing:{cs:[
+  {s:'Základ',i:['1 cibule','2 stroužky česneku','kousek čerstvého zázvoru nebo ½ lžičky sušeného','1 větší batát — na malé kostky','1 červená paprika — na proužky','1 menší cuketa — na půlkolečka','1 plechovka cizrny — slitá a propláchnutá','1 plechovka plnotučného kokosového mléka','~100 ml vody','olej']},
+  {s:'Koření a dochucení',i:['1–2 lžíce jemné kari pasty (nebo 2 lžičky kari koření)','1 lžička medu nebo javorového sirupu','1 lžička arašídového másla (volitelně)','1–2 lžíce sójové omáčky','šťáva z ½ limety','hrst čerstvého špenátu','sůl']},
+  {s:'Příloha',i:['jasmínová nebo basmati rýže']}
+],en:[
+  {s:'Base',i:['1 onion','2 garlic cloves','piece of fresh ginger or ½ tsp ground','1 large sweet potato — small cubes','1 red pepper — sliced','1 small courgette — half-moons','1 can chickpeas — drained and rinsed','1 can full-fat coconut milk','~100ml water','oil']},
+  {s:'Seasoning',i:['1–2 tbsp mild curry paste (or 2 tsp curry powder)','1 tsp honey or maple syrup','1 tsp peanut butter (optional)','1–2 tbsp soy sauce','juice of ½ lime','handful fresh spinach','salt']},
+  {s:'Side',i:['jasmine or basmati rice']}
+]},
+steps:{cs:[
+  'Dej vařit rýži. Batát nakrájej na malé kostky, papriku na proužky, cuketu na půlkolečka. Cizrnu slij a propláchni.',
+  'Na pánvi rozehřej olej, přidej cibuli a nech 3–4 minuty změknout. Přidej česnek a zázvor, krátce orestuj.',
+  'Přidej kari pastu nebo koření, nech ~půl minuty rozvonět v oleji — tahle chvíle dělá velký rozdíl v chuti.',
+  'Přidej batát, papriku a cizrnu. Zalij kokosovým mlékem a vodou. Přikryj a nech probublávat 12–15 minut, dokud batát nezměkne.',
+  'Přidej cuketu, vař ještě 3–5 minut — cuketa nesmí být rozvařená.',
+  'Dochutit sójovou omáčkou, medem a arašídovým máslem. Vmíchej špenát, nech jen zavadnout.',
+  'Úplně nakonec přidej šťávu z limety — nedávej ji příliš brzy, ať neztratí svěžest.'
+],en:[
+  'Start the rice. Dice sweet potato small, slice pepper, cut courgette into half-moons. Drain and rinse chickpeas.',
+  'Heat oil in a wide pan, add onion and soften 3–4 min. Add garlic and ginger, sauté briefly.',
+  'Add curry paste or powder, let it bloom in the oil for ~30 seconds — this one moment makes a big difference to flavour.',
+  'Add sweet potato, pepper and chickpeas. Pour in coconut milk and water. Cover and simmer 12–15 min until sweet potato is tender.',
+  'Add courgette, cook 3–5 more min — it should not go mushy.',
+  'Season with soy sauce, honey and peanut butter. Stir in spinach, just wilt it.',
+  'Add lime juice at the very end — do not add it too early or it loses its freshness.'
+]},
+tip:{cs:'Moc sladké → víc limety nebo citronu. Moc hutné → trochu vody. Ploché → sójová omáčka nebo špetka soli. Málo výrazné → trochu víc kari pasty rozmíchané v omáčce.\n\n🥭 Mango verze: přidej na konci trochu manga nebo mango chutney.\n🥜 Kešu verze: místo arašídového másla kešu máslo, nebo opražené kešu navrch — jemnější než arašídy.\n🌿 Thajštější: červená kari pasta, limeta, koriandr a případně bambusové výhonky.',
+en:'Too sweet → more lime or lemon. Too thick → a splash of water. Flat → soy sauce or a pinch of salt. Not punchy enough → a little more curry paste stirred in.\n\n🥭 Mango version: add a little mango or mango chutney at the end.\n🥜 Cashew version: use cashew butter instead of peanut butter, or top with toasted cashews — gentler than peanuts.\n🌿 More Thai: red curry paste, lime, coriander and optional bamboo shoots.'}},
+
+{id:15,cat:'european',emoji:'🍐',time:'25 min',diff:{cs:'snadné',en:'easy'},
+name:{cs:'Gnocchi s mascarpone, hruškou a parmazánem',en:'Gnocchi with Mascarpone, Pear & Parmesan'},
+desc:{cs:'Krémová omáčka, sladká hruška, hořká rukola, slaný parmazán, křupavé ořechy — rychlé a elegantní',en:'Creamy sauce, sweet pear, bitter rocket, salty parmesan, crunchy walnuts — quick and elegant'},
+cat_l:{cs:'Italská kuchyně',en:'Italian Cuisine'},
+ing:{cs:[
+  {s:'',i:['500 g gnocchi','250 g mascarpone','120–150 ml smetany ke šlehání','70–90 g parmazánu nebo Grana Padano, nastrouhán najemno','1 větší hruška nebo 2 menší — na kostičky nebo tenké plátky','hrst vlašských ořechů, nahrubo nasekaných','hrst rukoly','kousek másla','černý pepř, špetka soli','pár kapek citronu','trochu vody z vaření gnocchi']}
+],en:[
+  {s:'',i:['500g gnocchi','250g mascarpone','120–150ml whipping cream','70–90g Parmesan or Grana Padano, finely grated','1 large pear or 2 small — diced or thinly sliced','handful walnuts, roughly chopped','handful rocket','knob of butter','black pepper, pinch of salt','a few drops of lemon juice','a little gnocchi cooking water']}
+]},
+steps:{cs:[
+  'Nastrouhej parmazán, nakrájej hrušku na kostičky nebo plátky a hrubě nasekej ořechy.',
+  'Na suché pánvi krátce opeč ořechy, dokud se nerozvonějí. Odlož stranou — pozor, jde to rychle.',
+  'Do stejné pánve dej kousek másla. Přidej hrušku a nech 2–3 minuty lehce změknout — jen zesládnout, ne rozvařit.',
+  'Stáhni teplotu na nízko. Přidej mascarpone a smetanu, pomalu rozmíchej do hladké omáčky. Nevař prudce.',
+  'Přisyp parmazán, míchej dokud se nerozpustí. Opepři. Sůl dávej opatrně — parmazán je už slaný.',
+  'Gnocchi uvař v osolené vodě. Jakmile vyplavou (1–2 minuty), rovnou je přendej do omáčky. Přidej 2–3 lžíce vody z vaření a promíchej.',
+  'Vypni plotnu. Přidej kapky citronu a vmíchej rukolu — jen ať lehce povadne.',
+  'Na talíř posyp opraženými ořechy, trochou parmazánu a čerstvým pepřem.'
+],en:[
+  'Grate parmesan, dice or slice the pear, roughly chop the walnuts.',
+  'Toast walnuts in a dry pan until fragrant. Set aside — they go quickly.',
+  'Add a knob of butter to the same pan. Add pear and let it soften 2–3 min — just sweeten, not break down.',
+  'Reduce heat. Add mascarpone and cream, slowly stir to a smooth sauce. Do not boil hard.',
+  'Add parmesan, stir until melted. Season with pepper. Go easy on salt — parmesan is already salty.',
+  'Cook gnocchi in salted water. As soon as they float (1–2 min), transfer straight into the sauce. Add 2–3 tbsp cooking water and stir.',
+  'Turn off heat. Add drops of lemon and fold in rocket — just enough to wilt it slightly.',
+  'Serve topped with toasted walnuts, extra parmesan and fresh pepper.'
+]},
+tip:{cs:'Moc sladké nebo těžké → víc citronu a rukoly. Moc husté → voda z gnocchi, ne smetana.\n\n🧀 Slaná verze s modrým sýrem: nahraď mascarpone kombinací 100–130 g modrého sýra + 100–150 g ricotty + 120–180 ml smetany. Na začátku krátce rozvoň 1 malý stroužek česneku na másle (20–30 s, nesmí zhnědnout). Sůl nedávej vůbec — modrý sýr je dost slaný. Dokonč rukolou nebo baby špenátem, navrch opražené vlašské ořechy.',
+en:'Too sweet or heavy → more lemon and rocket. Too thick → gnocchi water, not more cream.\n\n🧀 Savoury blue cheese version: replace mascarpone with 100–130g blue cheese + 100–150g ricotta + 120–180ml cream. Start by briefly blooming 1 small garlic clove in butter (20–30 s, do not let it brown). Skip salt entirely — the cheese is salty enough. Finish with rocket or baby spinach, toasted walnuts on top.'}}
+
 ];
 
 const T={
@@ -596,21 +658,18 @@ function render(){
   const grid=document.getElementById('grid');
   const t=T[lang];
 
-  // Filter all recipes
   let list=R.filter(r=>{
     const fOk=filt==='all'||r.cat===filt;
     const qOk=!q||r.name.cs.toLowerCase().includes(q)||r.name.en.toLowerCase().includes(q)||r.desc.cs.toLowerCase().includes(q)||r.desc.en.toLowerCase().includes(q);
     return fOk&&qOk;
   });
 
-  // Maillard gets featured slot when filter=all and no search query
   const maillard=R.find(r=>r.id===MAILLARD_ID);
   const showFeatured=(filt==='all'||filt==='technique')&&!q&&maillard;
   const gridList=showFeatured?list.filter(r=>r.id!==MAILLARD_ID):list;
 
   document.getElementById('cnt-n').textContent=list.length;
 
-  // Featured card
   if(showFeatured&&maillard){
     featuredSlot.innerHTML=`
       <div class="featured-card" onclick="openM(${maillard.id})" role="button" tabindex="0"
@@ -631,7 +690,6 @@ function render(){
     featuredSlot.innerHTML='';
   }
 
-  // Grid
   if(!gridList.length){
     grid.innerHTML=`<div class="empty"><div class="icon">🔍</div>${t.noRes}</div>`;
     return;
